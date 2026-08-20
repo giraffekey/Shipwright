@@ -182,6 +182,10 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
     Player_SetCsActionWithHaltedActors(play, NULL, 7);
     this->getItemId = sGetItemIds[this->prizeIndex];
 
+    if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0) && this->getItemId == GI_HEART_PIECE) {
+        this->getItemId = GI_RUPEE_PURPLE;
+    }
+
     if ((this->getItemId == GI_BOMB_BAG_30) && (CUR_CAPACITY(UPG_BOMB_BAG) == 30)) {
         this->getItemId = GI_BOMB_BAG_40;
     }

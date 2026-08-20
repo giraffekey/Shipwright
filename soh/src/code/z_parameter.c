@@ -2304,10 +2304,16 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_HEART_PIECE_2) || (item == ITEM_HEART_PIECE)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
+        }
         gSaveContext.inventory.questItems += 1 << (QUEST_HEART_PIECE + 4);
         gSaveContext.ship.stats.heartPieces++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART_CONTAINER) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
+        }
         if (GameInteractor_Should(VB_HEARTS_INCREASE_WITH_CONTAINERS, true)) {
             gSaveContext.healthCapacity += FULL_HEART_HEALTH;
             gSaveContext.health += FULL_HEART_HEALTH;
@@ -2892,7 +2898,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     }
 
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
-    if (GameInteractor_OneHitKOActive()) {
+    if (GameInteractor_OneHitKOActive() || CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
         if (healthChange < 0) {
             gSaveContext.health = 0;
         }

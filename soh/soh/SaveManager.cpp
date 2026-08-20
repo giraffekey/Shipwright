@@ -745,8 +745,15 @@ void SaveManager::InitFileNormal() {
         gSaveContext.ship.filenameLanguage =
             (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
-    gSaveContext.healthCapacity = STARTING_HEALTH;
-    gSaveContext.health = STARTING_HEALTH;
+
+    if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+        gSaveContext.healthCapacity = FULL_HEART_HEALTH;
+        gSaveContext.health = FULL_HEART_HEALTH;
+    } else {
+        gSaveContext.healthCapacity = STARTING_HEALTH;
+        gSaveContext.health = STARTING_HEALTH;
+    }
+
     gSaveContext.magicLevel = 0;
     gSaveContext.magic = MAGIC_NORMAL_METER;
     gSaveContext.rupees = 0;

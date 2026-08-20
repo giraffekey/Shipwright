@@ -320,6 +320,10 @@ void EnElf_Init(Actor* thisx, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s32 colorConfig;
     s32 i;
+    
+    if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0) && thisx->params != FAIRY_NAVI && thisx->params != FAIRY_KOKIRI) {
+        Actor_Kill(&this->actor);
+    }
 
     Actor_ProcessInitChain(thisx, sInitChain);
     SkelAnime_Init(play, &this->skelAnime, &gFairySkel, &gFairyAnim, this->jointTable, this->morphTable, 15);

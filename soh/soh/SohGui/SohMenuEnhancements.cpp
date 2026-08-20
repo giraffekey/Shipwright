@@ -1349,6 +1349,11 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "When you lose 4 quarters of a heart you will permanently lose that Heart Container.\n\n"
             "Disabling this after the fact will restore your Heart Containers."));
+    AddWidget(path, "One Heart Challenge", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("OneHeartChallenge"))
+        .Options(CheckboxOptions().Tooltip(
+            "One heart. Damage always results in death.\n"
+            "Heart Containers, Heart Pieces, and Fairies are disabled."));
     AddWidget(path, "Damage Multiplier", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("DamageMult"))
         .Options(ComboboxOptions().ComboMap(allPowers).DefaultIndex(0).Tooltip(

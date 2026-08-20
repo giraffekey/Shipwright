@@ -265,6 +265,11 @@ void EnSth_GivePlayerItem(EnSth* this, PlayState* play) {
                     break;
             }
             break;
+        case 5:
+            if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+                getItemId = GI_RUPEE_PURPLE;
+            }
+            break;
     }
 
     Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);

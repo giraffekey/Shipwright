@@ -968,7 +968,11 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
             GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF,
                                             (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + sSongIndexShift[songIndex]);
-            this->reward = GI_HEART_PIECE;
+            if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+                this->reward = GI_RUPEE_PURPLE;
+            } else {
+                this->reward = GI_HEART_PIECE;
+            }
         } else {
             this->reward = GI_RUPEE_BLUE;
         }
@@ -977,7 +981,11 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
             GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF,
                                             (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + sSongIndexShift[songIndex]);
-            this->reward = GI_HEART_PIECE;
+            if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+                this->reward = GI_RUPEE_PURPLE;
+            } else {
+                this->reward = GI_HEART_PIECE;
+            }
         } else {
             this->reward = GI_RUPEE_PURPLE;
         }
