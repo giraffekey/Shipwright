@@ -529,7 +529,11 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
                     break;
             }
         } else {
-            getItemId = GI_HEART_PIECE;
+            if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+                getItemId = GI_RUPEE_PURPLE;
+            } else {
+                getItemId = GI_HEART_PIECE;
+            }
         }
         Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);
     }
@@ -558,7 +562,11 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
                 break;
         }
     } else {
-        getItemId = GI_HEART_PIECE;
+        if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+            getItemId = GI_RUPEE_PURPLE;
+        } else {
+            getItemId = GI_HEART_PIECE;
+        }
     }
 
     if (GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {

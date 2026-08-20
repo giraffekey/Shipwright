@@ -679,6 +679,10 @@ u32 HealthMeter_IsCritical(void) {
         var = 0x2C;
     }
 
+    if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+        return false;
+    }
+
     if (GameInteractor_Should(VB_HEALTH_METER_BE_CRITICAL, var >= gSaveContext.health && gSaveContext.health > 0)) {
         return true;
     } else {

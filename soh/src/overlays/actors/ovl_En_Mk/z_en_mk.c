@@ -202,7 +202,11 @@ void func_80AACFA0(EnMk* this, PlayState* play) {
         this->actionFunc = func_80AACA40;
         Flags_SetItemGetInf(ITEMGETINF_10);
     } else {
-        Actor_OfferGetItem(&this->actor, play, GI_HEART_PIECE, 10000.0f, 50.0f);
+        if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+            Actor_OfferGetItem(&this->actor, play, GI_RUPEE_PURPLE, 10000.0f, 50.0f);
+        } else {
+            Actor_OfferGetItem(&this->actor, play, GI_HEART_PIECE, 10000.0f, 50.0f);
+        }
     }
 }
 
@@ -210,7 +214,11 @@ void func_80AAD014(EnMk* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actionFunc = func_80AACFA0;
         if (GameInteractor_Should(VB_GIVE_ITEM_FROM_LAB_DIVE, true, this)) {
-            Actor_OfferGetItem(&this->actor, play, GI_HEART_PIECE, 10000.0f, 50.0f);
+            if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+                Actor_OfferGetItem(&this->actor, play, GI_RUPEE_PURPLE, 10000.0f, 50.0f);
+            } else {
+                Actor_OfferGetItem(&this->actor, play, GI_HEART_PIECE, 10000.0f, 50.0f);
+            }
         }
     }
 

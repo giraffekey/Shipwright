@@ -366,6 +366,20 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
         return;
     }
 
+    if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+        switch (this->actor.params) {
+            case ITEM00_HEART:
+            case ITEM00_HEART_CONTAINER:
+                Actor_Kill(&this->actor);
+                return;
+            case ITEM00_HEART_PIECE:
+                Vec3f pos = this->actor.world.pos;
+                Actor_Kill(&this->actor);
+                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, pos.x, pos.y, pos.z, 0, 0, 0, ITEM00_RUPEE_RED);
+                return;
+        }
+    }
+
     Actor_ProcessInitChain(&this->actor, sInitChain);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
@@ -1541,6 +1555,11 @@ s16 func_8001F404(s16 dropId) {
         }
     }
 
+    if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0) &&
+        (dropId == ITEM00_HEART || dropId == ITEM00_HEART_PIECE || dropId == ITEM00_HEART_CONTAINER)) {
+        return -1;
+    }
+
     // #region [Randomizer] [Enchancment]
     if ((CVarGetInteger(CVAR_ENHANCEMENT("EnableBombchuDrops"), 0) ||
          (IS_RANDO && Randomizer_GetSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1)) &&
@@ -1579,6 +1598,11 @@ EnItem00* Item_DropCollectible(PlayState* play, Vec3f* spawnPos, s16 params) {
     params &= 0x3FFF;
 
     if ((params & 0x00FF) == ITEM00_HEART && CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) {
+        return NULL;
+    }
+
+    if (((params & 0x00FF) == ITEM00_HEART || (params & 0x00FF) == ITEM00_HEART_PIECE || (params & 0x00FF) == ITEM00_HEART_CONTAINER) &&
+        CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
         return NULL;
     }
 
@@ -1626,6 +1650,11 @@ EnItem00* Item_DropCollectible2(PlayState* play, Vec3f* spawnPos, s16 params) {
     params &= 0x3FFF;
 
     if ((params & 0x00FF) == ITEM00_HEART && CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) {
+        return NULL;
+    }
+
+    if (((params & 0x00FF) == ITEM00_HEART || (params & 0x00FF) == ITEM00_HEART_PIECE || (params & 0x00FF) == ITEM00_HEART_CONTAINER) &&
+        CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
         return NULL;
     }
 
@@ -1710,12 +1739,14 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
                                               DEADSOUND_REPEAT_MODE_OFF, 40);
             return;
         } else if (gSaveContext.health <= 0x30 &&
-                   !CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) { // 3 hearts or less
+                   !CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0) &&
+                   !CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) { // 3 hearts or less
             params = 0xB * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_HEART;
         } else if (gSaveContext.health <= 0x50 &&
-                   !CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) { // 5 hearts or less
+                   !CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0) &&
+                   !CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) { // 5 hearts or less
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_HEART;
@@ -1750,7 +1781,7 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
         }
     }
 
-    if (dropId != 0xFF && (!CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0) || dropId != ITEM00_HEART)) {
+    if (dropId != 0xFF && (!CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0) || !CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0) || dropId != ITEM00_HEART)) {
         dropQuantity = sDropQuantities[params + dropTableIndex];
         while (dropQuantity > 0) {
             if (!param8000) {

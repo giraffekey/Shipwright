@@ -1042,8 +1042,13 @@ void EnSkj_SariaSongTalk(EnSkj* this, PlayState* play) {
         } else {
             func_80AFFE24(this);
             if (GameInteractor_Should(VB_GIVE_ITEM_FROM_SKULL_KID_SARIAS_SONG, true, this)) {
-                Actor_OfferGetItem(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this),
-                                   EnSkj_GetItemYRange(this));
+                if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+                    Actor_OfferGetItem(&this->actor, play, GI_RUPEE_PURPLE, EnSkj_GetItemXzRange(this),
+                                       EnSkj_GetItemYRange(this));
+                } else {
+                    Actor_OfferGetItem(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this),
+                                       EnSkj_GetItemYRange(this));
+                }
             }
         }
     }
@@ -1060,8 +1065,13 @@ void func_80AFFE44(EnSkj* this, PlayState* play) {
         EnSkj_SetupPostSariasSong(this);
     } else {
         if (GameInteractor_Should(VB_GIVE_ITEM_FROM_SKULL_KID_SARIAS_SONG, true, this)) {
-            Actor_OfferGetItem(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this),
-                               EnSkj_GetItemYRange(this));
+            if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+                Actor_OfferGetItem(&this->actor, play, GI_RUPEE_PURPLE, EnSkj_GetItemXzRange(this),
+                                   EnSkj_GetItemYRange(this));
+            } else {
+                Actor_OfferGetItem(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this),
+                                   EnSkj_GetItemYRange(this));
+            }
         }
     }
 }

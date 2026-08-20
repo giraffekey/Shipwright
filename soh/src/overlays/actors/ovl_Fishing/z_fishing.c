@@ -5049,7 +5049,11 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                                                       !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD),
                                                   &fishData)) {
                             HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
-                            getItemId = GI_HEART_PIECE;
+                            if (CVarGetInteger(CVAR_ENHANCEMENT("OneHeartChallenge"), 0)) {
+                                getItemId = GI_RUPEE_PURPLE;
+                            } else {
+                                getItemId = GI_HEART_PIECE;
+                            }
                             sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                         }
                     } else { // 13 lbs
